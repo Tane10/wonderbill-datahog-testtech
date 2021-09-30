@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "nodemon ./src/server.js"
   },
   "license": "ISC",
@@ -14,6 +14,10 @@
     "axios": "^0.21.4",
     "express": "^4.17.1",
     "nodemon": "^2.0.13",
+    "opossum": "^6.2.1",
     "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "jest": "^27.2.4"
   }
 }

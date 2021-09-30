@@ -1,29 +1,65 @@
+"use strict";
 const axios = require("axios");
 const logger = require("./logger");
 
-const circuitbreaker = () => {
-  let lastFailedCall = 0;
+class CircuitBreaker {
+  logger;
+  lastFailedCall = 0;
+  retryTimer = 1000;
+  failedCallsCounter = 0;
+  healthCheckUrl = "http://localhost:3000/healthcheck";
+  constructor() {
+    this.logger = logger;
+  }
 
-  return {
-    healthCheck: async () => {
-      const timeNow = Date.now();
+  async healthCheck() {
+    const currentTime = Date.now();
 
-      if (lastFailedCall && now - lastFailedCall <= 5000) {
-        logger.log("skipping call");
-        return;
+    if (this.lastFailedCall && currentTime - this.lastFailedCall) {
+      this.logger.info("Skipping call, server not available");
+      return;
+    }
+
+    try {
+      const healthCheckResponse = await axios.get(this.healthCheckUrl);
+      this.logger.info(healthCheckResponse.data);
+      this.lastFailedCall = 0;
+    } catch (error) {
+      this.lastFailedCall = Date.now();
+      this.failedCallsCounter++;
+      this;
+      if (error.header === 500) {
+        this.logger.error("Call failed, service currently not available");
+      } else {
       }
+      this.logger.error(error.header);
+    }
+  }
+}
 
-      try {
-        const healthCheck = await axios.get(
-          "http://localhost:3000/healthcheck"
-        );
+// const circuitbreaker = () => {
+//   let lastFailedCall = 0;
 
-        logger.info(healthCheck.data);
-      } catch (error) {
-        logger.warn(error.message);
-      }
-    },
-  };
-};
+//   return {
+//     healthCheck: async () => {
+//       const timeNow = Date.now();
 
-module.exports = circuitbreaker;
+//       if (lastFailedCall && now - lastFailedCall <= 5000) {
+//         logger.log("skipping call");
+//         return;
+//       }
+
+//       try {
+//         const healthCheck = await axios.get(
+//           "http://localhost:3000/healthcheck"
+//         );
+
+//         logger.info(healthCheck.data);
+//       } catch (error) {
+//         logger.warn(error.message);
+//       }
+//     },
+//   };
+// };
+
+module.exports = CircuitBreaker;
