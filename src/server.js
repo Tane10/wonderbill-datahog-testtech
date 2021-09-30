@@ -2,9 +2,7 @@ const express = require("express");
 const providers = require("./providers.json");
 const app = express();
 const port = 3000;
-const logger = require("./logger.js");
-// const heathCheck = require("./healthCheck");
-
+const routes = require("./routes");
 /* TODO: we have different options on how to deal with when it goes wrong#
 As our data providers can go offline for extended period of time, the naive implementations of this task using retry mechanisms are not going to be accepted!
 
@@ -22,7 +20,6 @@ As our data providers can go offline for extended period of time, the naive impl
  * step 2: build a post endpoint with 2 field provider (gas or internet) + callback
  * step 3: payload for endpoint need to be validated check gas or internet if none the return a default
  * step 4: once payload is accepted then call mock get endpoint "/providers/:id"
- *
  */
 
 const FAILURE_PROBABILITY = 0.5;
@@ -38,21 +35,13 @@ function randomFailuresMiddleware(_, res, next) {
 
 app.use(randomFailuresMiddleware);
 app.use(express.json());
+app.use(routes);
 // app.use(heathCheck); can't use health check like midddle ware case it just sits there
 
 app.get("/providers/:id", (req, res) => {
   const bills = providers[req.params.id];
   if (!bills) return res.status(404).end();
   res.send(bills);
-});
-
-app.get("/healthcheck", (req, res) => {
-  res.json({ status: "ok" });
-});
-
-// call back url
-app.post("/callbackurl", (req, res) => {
-  console.log(req.body);
 });
 
 app.listen(port, () =>
