@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "nodemon": "^2.0.13",
     "opossum": "^6.2.1",
+    "redis": "^3.1.2",
     "winston": "^3.3.3"
   },
   "devDependencies": {

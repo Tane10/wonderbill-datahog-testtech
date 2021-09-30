@@ -3,6 +3,7 @@ const providers = require("./providers.json");
 const app = express();
 const port = 3000;
 const routes = require("./routes");
+const redis = require("redis");
 /* TODO: we have different options on how to deal with when it goes wrong#
 As our data providers can go offline for extended period of time, the naive implementations of this task using retry mechanisms are not going to be accepted!
 
@@ -23,6 +24,11 @@ As our data providers can go offline for extended period of time, the naive impl
  */
 
 const FAILURE_PROBABILITY = 0.5;
+
+const PORT = process.env.PORT || 3000;
+const REDIS_PORT = process.env.REDIS_PORT || 6379;
+
+const redisClient = redis.createClient(REDIS_PORT);
 
 function randomFailuresMiddleware(_, res, next) {
   if (Math.random() > 1 - FAILURE_PROBABILITY) {

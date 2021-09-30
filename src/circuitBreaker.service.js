@@ -44,3 +44,5 @@ async function getProviders(req, res, next) {
 }
 
 module.exports = getProviders;
+
+docker run -d --name  redisLocal -p 127.0.0.1:6379:6379 redis
