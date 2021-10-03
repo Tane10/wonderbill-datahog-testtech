@@ -1,16 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const getProviders = require("./circuitBreaker.service");
-
-router.get("/healthcheck", (req, res) => {
-  res.json({ status: "ok" });
-});
+const { getProviders } = require("./circuitBreaker.service");
 
 router.post("/handle-provider", getProviders);
 
-// call back url
-router.post("/callbackurl", (req, res) => {
-  console.log(req.body);
-});
+// router.post("/callbackurl", handleCallback);
 
 module.exports = router;

@@ -26,9 +26,9 @@ As our data providers can go offline for extended period of time, the naive impl
 const FAILURE_PROBABILITY = 0.5;
 
 const PORT = process.env.PORT || 3000;
-const REDIS_PORT = process.env.REDIS_PORT || 6379;
+// const REDIS_PORT = process.env.REDIS_PORT || 6379;
 
-const redisClient = redis.createClient(REDIS_PORT);
+// const redisClient = redis.createClient(REDIS_PORT);
 
 function randomFailuresMiddleware(_, res, next) {
   if (Math.random() > 1 - FAILURE_PROBABILITY) {
@@ -39,7 +39,7 @@ function randomFailuresMiddleware(_, res, next) {
   next();
 }
 
-app.use(randomFailuresMiddleware);
+// app.use(randomFailuresMiddleware);
 app.use(express.json());
 app.use(routes);
 // app.use(heathCheck); can't use health check like midddle ware case it just sits there
@@ -50,6 +50,6 @@ app.get("/providers/:id", (req, res) => {
   res.send(bills);
 });
 
-app.listen(port, () =>
-  console.log(`Providers server listening at http://localhost:${port}`)
+app.listen(PORT, () =>
+  console.log(`Providers server listening at http://localhost:${PORT}`)
 );

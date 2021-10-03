@@ -1,0 +1,17 @@
+post http://localhost:3000/handle-provider
+Accept: application/json
+Content-Type: application/json
+
+{
+    "providers":[ "internet", "gas"],
+    "callbackUrl": "http://localhost:3000/callbackurl"
+}
+
+###
+GET http://localhost:3000/providers/gas
+
+###
+###
+GET http://localhost:3000/callbackurl
+
+###
