@@ -3,7 +3,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "providers":[ "internet", "gas"],
+    "providers":[ "gas", "internet"],
     "callbackUrl": "http://localhost:3000/callbackurl"
 }
 

@@ -1,3 +1,4 @@
+"use strict";
 const Validator = require("jsonschema").Validator;
 let jsonSchemaValidator = new Validator();
 
