@@ -14,6 +14,7 @@
     "axios": "^0.21.4",
     "express": "^4.17.1",
     "jsonschema": "^1.4.0",
+    "mongoose": "^6.0.8",
     "nodemon": "^2.0.13",
     "opossum": "^6.2.1",
     "redis": "^3.1.2",

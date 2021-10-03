@@ -1,12 +1,23 @@
-version: '3'
+version: "3.4"
+
 services:
+  redis:
+    image: redis:6.2
+    container_name: cache
+    expose:
+      - 6379
+
   datahog:
+    image: datahog
     build:
       context: .
       dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+      REDIS_URL: redis://cache
+    links:
+      - redis
     ports:
-    - "3000:3000"
+      - 3000:3000
     volumes:
-    - /c/Users/josh/datahog:/usr/src/app
-volumes:
-  code: {} 
+      - .:/usr/src/app

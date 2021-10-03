@@ -1,18 +1,10 @@
-# Official Appolo Docker image
 FROM node:14-alpine
-
+ENV NODE_ENV=production
 WORKDIR /usr/src/app
-
-# Copy application dependency manifests to the container image.
-# A wildcard is used to ensure both package.json AND package-lock.json are copied.
-# Copying this separately prevents re-running npm install on every code change.
-COPY package*.json ./
-
-# Install production dependencies.
-RUN npm install --only=production
-
-# Copy local code to the container image.
-COPY . ./
-
-# Run the web service on container startup.
-CMD [ "npm", "start" ]
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+RUN npm install --production --silent && mv node_modules ../
+COPY . .
+EXPOSE 3000
+RUN chown -R node /usr/src/app
+USER node
+CMD ["npm", "start"]
