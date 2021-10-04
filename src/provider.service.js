@@ -21,9 +21,9 @@ async function getProviders(req, res, next) {
 
     try {
       const providersData = await breaker.fire(providers, callbackUrl);
-      await axios.post(`${BASEURL}/callbackurl`, providersData);
+      // await axios.post(`${BASEURL}/callbackurl`, providersData);
       // res.redirect(200, `${BASEURL}/callbackurl`);
-      // res.send("no call back");
+      res.json(providersData);
     } catch (error) {
       const { failures, fallbacks, rejects, timeouts } = breaker.stats;
       console.log(
